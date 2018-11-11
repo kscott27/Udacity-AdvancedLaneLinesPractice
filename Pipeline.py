@@ -3,7 +3,7 @@ import cv2
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
-from GradientHelpers import dir_threshold
+from GradientHelpers import dir_threshold, mag_thresh
 
 
 image = mpimg.imread('../images/bridge_shadow.jpg')
@@ -15,6 +15,9 @@ def pipeline(img, s_thresh=(170, 255), sx_thresh=(20, 100)):
     hls = cv2.cvtColor(img, cv2.COLOR_RGB2HLS)
     l_channel = hls[:,:,1]
     s_channel = hls[:,:,2]
+
+    mag_binary = mag_thresh(image, sobel_kernel=7, mag_thresh=(20, 100))
+
     # Sobel x
     sobelx = cv2.Sobel(l_channel, cv2.CV_64F, 1, 0) # Take the derivative in x
     abs_sobelx = np.absolute(sobelx) # Absolute x derivative to accentuate lines away from horizontal
@@ -33,15 +36,15 @@ def pipeline(img, s_thresh=(170, 255), sx_thresh=(20, 100)):
     dir_binary = dir_threshold(image, sobel_kernel=7, thresh=(0.7, 1.3))
 
     # Combine the two binary thresholds
-    combined_binary = np.zeros_like(sxbinary)
-    combined_binary[((s_binary == 1) | (sxbinary == 1)) & (dir_binary == 1)] = 1
+    combined_binary = np.zeros_like(dir_binary)
+    combined_binary[((s_binary == 1) | (sxbinary == 1))] = 1
 
-    return combined_binary, color_binary
+    return combined_binary
     
-combined_binary, color_binary = pipeline(image)
+combined_binary = pipeline(image)
 
 # Plot the result
-f, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(24, 9))
+f, (ax1, ax2) = plt.subplots(1, 2, figsize=(24, 9))
 f.tight_layout()
 
 ax1.imshow(image)
@@ -49,10 +52,6 @@ ax1.set_title('Original Image', fontsize=40)
 
 ax2.imshow(combined_binary)
 ax2.set_title('Combined', fontsize=40)
-plt.subplots_adjust(left=0., right=1, top=0.9, bottom=0.)
-
-ax3.imshow(color_binary)
-ax3.set_title('Color', fontsize=40)
 plt.subplots_adjust(left=0., right=1, top=0.9, bottom=0.)
 
 plt.savefig('../images/pipeline_output.jpg')
