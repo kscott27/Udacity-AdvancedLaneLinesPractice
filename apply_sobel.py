@@ -6,7 +6,7 @@ import time
 
 
 # Read in an image and grayscale it
-image = mpimg.imread('images/signs_vehicles_xygrad.png')
+image = mpimg.imread('../images/signs_vehicles_xygrad.png')
 
 # Define a function that applies Sobel x or y, 
 # then takes an absolute value and applies a threshold.
@@ -42,4 +42,4 @@ ax2.imshow(grad_binary, cmap='gray')
 ax2.set_title('Thresholded Gradient', fontsize=50)
 plt.subplots_adjust(left=0., right=1, top=0.9, bottom=0.)
 
-plt.savefig("images/sobel_applied_x.jpg")
+plt.savefig("../images/sobel_applied_x.jpg")

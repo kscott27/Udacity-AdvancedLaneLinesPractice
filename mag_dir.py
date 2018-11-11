@@ -6,7 +6,7 @@ import pickle
 
 
 # Read in an image
-image = mpimg.imread('images/signs_vehicles_xygrad.png')
+image = mpimg.imread('../images/signs_vehicles_xygrad.png')
 
 # Define a function that applies Sobel x and y, 
 # then computes the magnitude of the gradient
@@ -40,4 +40,4 @@ ax2.imshow(mag_binary, cmap='gray')
 ax2.set_title('Thresholded Magnitude', fontsize=50)
 plt.subplots_adjust(left=0., right=1, top=0.9, bottom=0.)
 
-plt.savefig("images/mag_binary.jpg")
+plt.savefig("../images/mag_binary.jpg")
