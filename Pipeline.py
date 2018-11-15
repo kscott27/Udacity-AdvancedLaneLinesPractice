@@ -3,6 +3,8 @@ import cv2
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
+from radius_curve import measure_curvature_real
+from curve_pixels import measure_curvature_pixels
 from prev_poly import fit_poly, search_around_poly
 from sliding_window import find_lane_pixels, fit_polynomial
 from GradientHelpers import dir_threshold, mag_thresh
@@ -129,6 +131,13 @@ result = search_around_poly(warped)
 
 # View your output
 plt.imshow(result)
+
+# Calculate the radius of curvature in meters for both lane lines
+left_curverad, right_curverad = measure_curvature_real()
+
+print(left_curverad, 'm', right_curverad, 'm')
+# Should see values of 533.75 and 648.16 here, if using
+# the default `generate_data` function with given seed number
 
 # processed_image = process_image(warped)
 
