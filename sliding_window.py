@@ -3,9 +3,6 @@ import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 import cv2
 
-# Load our image
-binary_warped = mpimg.imread('warped_example.jpg')
-
 def find_lane_pixels(binary_warped):
     # Take a histogram of the bottom half of the image
     histogram = np.sum(binary_warped[binary_warped.shape[0]//2:,:], axis=0)
@@ -117,8 +114,3 @@ def fit_polynomial(binary_warped):
     plt.plot(right_fitx, ploty, color='yellow')
 
     return out_img
-
-
-out_img = fit_polynomial(binary_warped)
-
-plt.imshow(out_img)
